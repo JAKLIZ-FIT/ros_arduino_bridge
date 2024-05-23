@@ -31,14 +31,15 @@ long Ping(int pin) {
   
   return(range);
 }
+#ifdef USE_MAG
+  // libraries for magnetometer
+  #include <Wire.h>
+  #include <Adafruit_Sensor.h>
+  #include <Adafruit_HMC5883_U.h> 
 
-// libraries for magnetometer
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_HMC5883_U.h> 
+  // give random id
+  Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
 
-// give random id
-Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
-
-int setup_mag(void);
-float read_mag(void);
+  int setup_mag(void);
+  float read_mag(void);
+#endif

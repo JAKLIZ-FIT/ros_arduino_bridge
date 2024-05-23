@@ -31,21 +31,23 @@
 
  ***************************************************************************/
  
-int setup_mag(void){
-  return (!mag.begin());
-}
+#ifdef USE_MAG
+  int setup_mag(void){
+    return (!mag.begin());
+  }
 
-float read_mag(){
-  sensors_event_t event; 
-  mag.getEvent(&event);
-  float heading = atan2(event.magnetic.y, event.magnetic.x);
-  heading += 0.09; // my magnetic declination
-  
-  // Correct for when signs are reversed.
-  if(heading < 0)
-    heading += 2*PI;  
-  // Check for wrap due to addition of declination.
-  if(heading > 2*PI)
-    heading -= 2*PI;
-  return heading;
-}
+  float read_mag(){
+    sensors_event_t event; 
+    mag.getEvent(&event);
+    float heading = atan2(event.magnetic.y, event.magnetic.x);
+    heading += 0.09; // my magnetic declination
+    
+    // Correct for when signs are reversed.
+    if(heading < 0)
+      heading += 2*PI;  
+    // Check for wrap due to addition of declination.
+    if(heading > 2*PI)
+      heading -= 2*PI;
+    return heading;
+  }
+#endif
