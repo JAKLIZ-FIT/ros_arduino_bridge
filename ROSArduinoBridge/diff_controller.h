@@ -5,6 +5,8 @@
    http://vanadium-ros-pkg.googlecode.com/svn/trunk/arbotix/
 */
 
+#include <EEPROM.h>
+
 /* PID setpoint info For a Motor */
 typedef struct {
   double TargetTicksPerFrame;    // target speed in ticks per frame
@@ -33,10 +35,10 @@ SetPointInfo;
 SetPointInfo leftPID, rightPID;
 
 /* PID Parameters */
-int Kp = 1; //20;
-int Kd = 0; //12;
-int Ki = 0; //0;
-int Ko = 50; //50;
+int Kp = EEPROM.read(0);// 1; //20;
+int Kd = EEPROM.read(1);//0; //12;
+int Ki = EEPROM.read(2);//0; //0;
+int Ko = EEPROM.read(3);//50; //50;
 
 unsigned char moving = 0; // is the base in motion?
 

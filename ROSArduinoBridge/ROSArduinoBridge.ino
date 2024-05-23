@@ -126,6 +126,8 @@
   long lastMotorCommand = AUTO_STOP_INTERVAL;
 #endif
 
+#include <EEPROM.h>
+
 /* Variable initialization */
 
 // A pair of varibles to help parse serial commands (thanks Fergs)
@@ -245,7 +247,29 @@ int runCommand() {
       Kd = pid_args[1];
       Ki = pid_args[2];
       Ko = pid_args[3];
+      EEPROM.write(0,Kp);
+      EEPROM.write(1,Kd);
+      EEPROM.write(2,Ki);
+      EEPROM.write(3,Ko);
+      Serial.print("Kp = ");Serial.print(Kp);
+      Serial.print(" Kd = ");Serial.print(Kd);
+      Serial.print(" Ki = ");Serial.print(Ki);
+      Serial.print(" Ko = ");Serial.println (Ko);
+      Kp = EEPROM.read(0);
+      Kd = EEPROM.read(1);
+      Ki = EEPROM.read(2);
+      Ko = EEPROM.read(3);
+      Serial.print("Kp = ");Serial.print(Kp);
+      Serial.print(" Kd = ");Serial.print(Kd);
+      Serial.print(" Ki = ");Serial.print(Ki);
+      Serial.print(" Ko = ");Serial.println (Ko);
       Serial.println("OK");
+      break;
+    case READ_PID:
+      Serial.print("Kp = ");Serial.print(Kp);
+      Serial.print(" Kd = ");Serial.print(Kd);
+      Serial.print(" Ki = ");Serial.print(Ki);
+      Serial.print(" Ko = ");Serial.println (Ko);
       break;
 #endif 
 
