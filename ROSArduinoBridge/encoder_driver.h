@@ -10,8 +10,10 @@
   #define LEFT_ENC_PIN_B PD3  //pin 3
   
   //below can be changed, but should be PORTC pins
-  #define RIGHT_ENC_PIN_A PC0 //PC4  //pin A4
-  #define RIGHT_ENC_PIN_B PC1 //PC5   //pin A5
+  #define RIGHT_ENC_PIN_A PC2 //PC4  //pin A4
+  #define RIGHT_ENC_PIN_B PC3 //PC5   //pin A5
+
+  // TODO dont forget to change the shift in the ino file!!!
 
   // changed to these pins to avoid collision with motor control
   //#define LEFT_ENC_PIN_A PD0  //pin 0
