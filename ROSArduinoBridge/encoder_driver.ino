@@ -47,7 +47,9 @@
         static uint8_t enc_last=0;
           	
 	enc_last <<=2; //shift previous state two places
-	enc_last |= (PINC & (3 << 4)) >> 4; //read the current state into lowest 2 bits
+  
+  //enc_last |= (PINC & (3 << 4)) >> 4; //read the current state into lowest 2 bits
+  enc_last |= (PINC & (3 << 0)) >> 0; //read the current state into lowest 2 bits
   
   	right_enc_pos += ENC_STATES[(enc_last & 0x0f)];
   }
