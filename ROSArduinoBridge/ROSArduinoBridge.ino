@@ -148,6 +148,10 @@ char argv2[16];
 long arg1;
 long arg2;
 
+// message checksum
+int checksum = 0;
+String message;
+
 /* Clear the current command parameters */
 void resetCommand() {
   cmd = NULL;
@@ -208,9 +212,16 @@ int runCommand() {
     
 #ifdef USE_BASE
     case READ_ENCODERS:
-      Serial.print(readEncoder(LEFT));
-      Serial.print(" ");
-      Serial.println(readEncoder(RIGHT));
+      //Serial.print(readEncoder(LEFT));
+      //Serial.print(" ");
+      //Serial.println(readEncoder(RIGHT));
+      message = String(readEncoder(LEFT)) + " " + String(readEncoder(RIGHT));
+      checksum = 0;
+      for (char c : message){
+        checksum += c;
+      }
+      message += " " + String(checksum);
+      Serial.println(message);
       break;
     case RESET_ENCODERS:
       resetEncoders();
