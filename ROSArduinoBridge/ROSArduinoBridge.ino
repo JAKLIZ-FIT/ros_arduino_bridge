@@ -258,6 +258,21 @@ int runCommand() {
       Kd = pid_args[1];
       Ki = pid_args[2];
       Ko = pid_args[3];
+      Serial.print("Kp = ");Serial.print(Kp);
+      Serial.print(" Kd = ");Serial.print(Kd);
+      Serial.print(" Ki = ");Serial.print(Ki);
+      Serial.print(" Ko = ");Serial.println (Ko);
+      Serial.println("OK");
+      break;
+    case SAVE_PID:
+      while ((str = strtok_r(p, ":", &p)) != '\0') {
+        pid_args[i] = atoi(str);
+        i++;
+      }
+      Kp = pid_args[0];
+      Kd = pid_args[1];
+      Ki = pid_args[2];
+      Ko = pid_args[3];
       EEPROM.write(0,Kp);
       EEPROM.write(1,Kd);
       EEPROM.write(2,Ki);
@@ -410,4 +425,3 @@ void loop() {
   }
 #endif
 }
-

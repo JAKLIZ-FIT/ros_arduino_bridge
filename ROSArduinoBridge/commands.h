@@ -24,6 +24,6 @@
 #define RIGHT           1
 #define READ_MAG       'g'
 
+#define SAVE_PID       'f' // save PID params to EEPROM
+
 #endif
-
-
