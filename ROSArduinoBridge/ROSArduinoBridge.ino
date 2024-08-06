@@ -75,8 +75,11 @@
 //#define USE_SERVOS  // Enable use of PWM servos as defined in servos.h
 #undef USE_SERVOS     // Disable use of PWM servos
 
+#define FRONT_BUMPER
+
 /* Serial port baud rate */
-#define BAUDRATE     57600
+//#define BAUDRATE     57600 // this was original value - quite a few chars were lost in communication
+#define BAUDRATE     57600 // 115200 was also unreliable - more than 57600
 
 /* Maximum PWM signal */
 #define MAX_PWM        255
@@ -151,6 +154,13 @@ long arg2;
 // message checksum
 int checksum = 0;
 String message;
+
+
+// variables for possible future feature with ros
+//bool bumper_l_pressed = false;
+//bool bumper_r_pressed = false;
+
+
 
 /* Clear the current command parameters */
 void resetCommand() {
@@ -237,6 +247,15 @@ int runCommand() {
         moving = 0;
       }
       else moving = 1;
+      #ifdef FRONT_BUMPER
+      if (bumber_state == 3){ // both switches free (pullup)
+        ;  
+      }
+      else{ // bumper not ok
+        arg1 = min(0,arg1);
+        arg2 = min(0,arg2);
+      }
+      #endif
       leftPID.TargetTicksPerFrame = arg1;
       rightPID.TargetTicksPerFrame = arg2;
       Serial.println("OK"); 
@@ -246,6 +265,15 @@ int runCommand() {
       lastMotorCommand = millis();
       resetPID();
       moving = 0; // Sneaky way to temporarily disable the PID
+      #ifdef FRONT_BUMPER
+      if (bumber_state == 3){ // both switches free (pullup)
+        ;  
+      }
+      else{ // bumper not ok
+        arg1 = min(0,arg1);
+        arg2 = min(0,arg2);
+      }
+      #endif
       setMotorSpeeds(arg1, arg2);
       Serial.println("OK"); 
       break;
@@ -354,6 +382,19 @@ void setup() {
 
 #ifdef USE_MAG
   setup_mag();
+#endif
+
+#ifdef FRONT_BUMPER
+  //set as inputs
+  DDRD &= ~(1 << LEFT_F_BUMPER_PIN);
+  DDRD &= ~(1 << RIGHT_F_BUMPER_PIN);
+
+  //enable pull up resistors
+  PORTD |= (1 << LEFT_F_BUMPER_PIN);
+  PORTD |= (1 << RIGHT_F_BUMPER_PIN);
+
+  // tell pin change mask to listen to front bumper pins
+  PCMSK2 |= (1 << LEFT_F_BUMPER_PIN) | (1 << RIGHT_F_BUMPER_PIN);
 #endif
 }
 

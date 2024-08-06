@@ -31,6 +31,8 @@
   volatile long left_enc_pos = 0L;
   volatile long right_enc_pos = 0L;
   static const int8_t ENC_STATES [] = {0,1,-1,0,-1,0,0,1,1,0,0,-1,0,-1,1,0};  //encoder lookup table
+
+  volatile int bumper_state = 0;
     
   /* Interrupt routine for LEFT encoder, taking care of actual counting */
   ISR (PCINT2_vect){
@@ -40,6 +42,10 @@
 	enc_last |= (PIND & (3 << 2)) >> 2; //read the current state into lowest 2 bits
   
   	left_enc_pos += ENC_STATES[(enc_last & 0x0f)];
+
+#ifdef FRONT_BUMBER
+    bumper_state = (PIND & (3 << 7)) >> 7;
+#endif
   }
   
   /* Interrupt routine for RIGHT encoder, taking care of actual counting */
@@ -81,4 +87,3 @@ void resetEncoders() {
 }
 
 #endif
-

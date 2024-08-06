@@ -43,3 +43,9 @@ long Ping(int pin) {
   int setup_mag(void);
   float read_mag(void);
 #endif
+
+// front bumper with two limit switches
+#ifdef FRONT_BUMPER // for sabertooth safety pin, connect limit switches in series
+  #define LEFT_F_BUMPER_PIN PD7
+  #define RIGHT_F_BUMPER_PIN PD8
+#endif // FRONT_BUMPER
